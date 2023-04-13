@@ -2,7 +2,13 @@
 
 {% block content %}
 welcome to MexMe
+<div id="tweets">
+    Loading...
+</div>
 <script>
+    const tweetElement = document.getElementById('tweets')
+    
+
     const xhr = new XMLHttpRequest()
     const method = 'GET'
     const url = "/tweets"
@@ -12,11 +18,22 @@ welcome to MexMe
     xhr.open(method, url)
     xhr.onload = function() {
         const serverResponse = xhr.response
-        var listedItems = serverResponse.response
-        console.log(listedItems);
+        const listedItems = serverResponse.response
+        var finalTweetStr =""
+        var i;
+        for(i=0; i<listedItems.length; i++) {
+            var currentItem = "<div class='mb-4'><h1>" + listedItems[i].id + "</h1>" + "<p>" + listedItems[i].content + "</p></div>"
+            finalTweetStr += currentItem
+            console.log(listedItems[i]);
+        }
+
+        tweetElement.innerHTML = finalTweetStr
+
+
     }
 
     xhr.send()
+    
 </script>
 
 {% endblock content %}
