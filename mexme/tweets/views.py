@@ -14,10 +14,10 @@ def home_view(request, *args, **kwargs):
 def tweet_create_view(request, *args, **kwargs):
     form = TweetForm(request.POST or None)
     if form.is_valid():
-        obj = form.save(commit=false)
+        obj = form.save(commit=False)
         obj.save()
         form = TweetForm()
-    return render(request, 'components/forms.html', context={"form": form})
+    return render(request, 'components/form.html', context={"form": form})
 
 
 def tweet_list_view(request, *args, **kwargs):
