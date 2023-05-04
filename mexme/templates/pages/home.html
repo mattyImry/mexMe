@@ -8,6 +8,16 @@
     </div>
 </div>
 
+<div class="row mb-3">
+    <div class="col-md-4 mx-auto col-10">
+        <form action="/create-tweet" class="form" method="POST">
+            <input type="hidden" value="/" name="next">
+            <textarea name="content" id="" class="form-control" placeholder="your MexMe goes here"></textarea>
+            <button type="submit" class="btn btn-primary">MexMe</button>
+        </form>
+    </div>
+</div>
+
 <div class="row" id="tweets">
     Loading...
 </div>
