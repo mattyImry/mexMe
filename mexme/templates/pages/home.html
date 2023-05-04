@@ -7,15 +7,20 @@ welcome to MexMe
 </div>
 <script>
     const tweetElement = document.getElementById('tweets')
-    
-
     const xhr = new XMLHttpRequest()
     const method = 'GET'
     const url = "/tweets"
     const responseType = "json"
 
+    function likeBtn(){
+        return "<button class='btn btn-primary'>Like</button>"
+    };
+
     function formatTweetElement(tweet) {
-        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id +"'><p>" + tweet.content + "</p></div>";
+        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id 
+        +"'><p>" + tweet.content 
+            + "</p><div class='btn-group'>" + likeBtn() +
+            "</div></div>";
         return formattedTweet
     }
 
