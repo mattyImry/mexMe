@@ -41,13 +41,10 @@ welcome to MexMe
         for(i = 0; i < listedItems.length; i++) {
             var tweetObj = listedItems[i];
             var currentItem = formatTweetElement(tweetObj);
-            finalTweetStr += currentItem;
-            
+            finalTweetStr += currentItem;   
         }
 
         tweetElement.innerHTML = finalTweetStr;
-
-
     }
 
     xhr.send()
