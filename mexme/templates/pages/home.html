@@ -43,11 +43,9 @@
                 const newTweetElement = formatTweetElement(newTweetJson);
                 const ogHtml = tweetContainerElement.innerHTML
                 tweetContainerElement.innerHTML = newTweetElement + ogHtml
-                
             }
         }
         xhr.send(myFormData)
-
     }
 
     const tweetCreateFormEl = document.getElementById("tweet-create-form");
