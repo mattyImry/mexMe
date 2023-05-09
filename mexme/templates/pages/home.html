@@ -29,7 +29,7 @@
         const myForm = event.target;
         const myFormData = new FormData(myForm);
         const url = myForm.getAttribute("action");
-        const method = myForm.getAttribute("mehod");
+        const method = myForm.getAttribute("method");
         const xhr = new XMLHttpRequest();
         const responseType = "json";
         xhr.responseType = responseType;
@@ -41,10 +41,12 @@
             if(xhr.status === 201){
                 const newTweetJson = xhr.response;
                 const newTweetElement = formatTweetElement(newTweetJson);
-                tweetContainerElement.prepend(newTweetElement)
+                const ogHtml = tweetContainerElement.innerHTML
+                tweetContainerElement.innerHTML = newTweetElement + ogHtml
+                
             }
         }
-        xhr.send()
+        xhr.send(myFormData)
 
     }
 
