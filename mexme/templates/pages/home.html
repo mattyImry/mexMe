@@ -12,6 +12,7 @@
     <div class="col-md-4 mx-auto col-10">
         <form action="/create-tweet" id="tweet-create-form" class="form" method="POST">
             {% csrf_token %}
+            <div class="d-none alert alert-danger" id="tweet-create-form-error"></div>
             <input type="hidden" value="/" name="next">
             <textarea name="content" id="" class="form-control" placeholder="your MexMe goes here" required></textarea>
             <button type="submit" class="btn btn-primary">MexMe</button>
@@ -23,6 +24,17 @@
     Loading...
 </div>
 <script>
+
+    function handleTweetFormError(msg, display){
+        var myErrorDiv = document.getElementById("tweet-create-form-error");
+        if (display === true) {
+            myErrorDiv.setAttribute("class", "d-block alert alert-danger")
+            myErrorDiv.innerText = msg
+        } else {
+            myErrorDiv.setAttribute("class", "d-none alert alert-danger")
+        }
+
+    }
 
     function handleTweetCreateFormDidSubmit(event) {
         event.preventDefault();
@@ -39,6 +51,7 @@
 
         xhr.onload = function() {
             if(xhr.status === 201){
+                handleTweetFormError("", false)
                 const newTweetJson = xhr.response;
                 const newTweetElement = formatTweetElement(newTweetJson);
                 const ogHtml = tweetContainerElement.innerHTML
@@ -46,6 +59,18 @@
                 myForm.reset();
             } else if (xmr.status === 400){
                 const errorJson = xhr.response
+                const contentError = errorJson.content
+                let contentErrorMsg;
+                if(contentError) {
+                    contentErrorMsg = contentError[0]
+                    if (contentErrorMsg) {
+                        handleTweetFormError(contentErrorMsg, true)
+                    } else {
+                        alert("An error occured. Please Try Again")
+                    }
+                } else {
+                    alert("An error occured. Please Try Again")
+                }
 
             } else if (xmr.status === 500){
                 alert('Server error . Please Try Again')
