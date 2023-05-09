@@ -20,7 +20,7 @@ def tweet_create_view(request, *args, **kwargs):
     if form.is_valid():
         obj = form.save(commit=False)
         obj.save()
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse(obj.serialize(), status=201)
         if next_url is not None and url_has_allowed_host_and_scheme(
                 next_url, ALLOWED_HOSTS):
