@@ -72,7 +72,11 @@
                     alert("An error occured. Please Try Again")
                 }
 
-            } else if (xmr.status === 500){
+            } else if (xmr.status === 401){
+                alert('You must login')
+                window.location.href = '/login'
+
+            }else if (xmr.status === 500){
                 alert('Server error . Please Try Again')
             }
         }
