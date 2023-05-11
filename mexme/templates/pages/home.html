@@ -76,6 +76,10 @@
                 alert('You must login')
                 window.location.href = '/login'
 
+            }else if (xmr.status === 403){
+                alert('You must login')
+                window.location.href = '/login'
+
             }else if (xmr.status === 500){
                 alert('Server error . Please Try Again')
             }
