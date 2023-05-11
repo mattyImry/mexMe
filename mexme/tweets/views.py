@@ -3,7 +3,8 @@ from django.conf import settings
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.http import url_has_allowed_host_and_scheme
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from .models import Tweet
 from .forms import TweetForm
 from .serializers import TweetSerializer
@@ -15,13 +16,20 @@ def home_view(request, *args, **kwargs):
     return render(request, "pages/home.html", context={}, status=200)
 
 
+@api_view(['POST'])
 def tweet_create_view(request, *args, **kwargs):
+    serializer = TweetSerializer(data=request.POST)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=201)
+    return Response({}, status=400)
 
-    serializer = TweetSerializer(data=request.POST or None)
-    if serializer.is_valid():
-        obj = serializer.save(user=request.user)
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse({}, status=400)
+
+@api_view(['GET'])
+def tweet_list_view(request, *args, **kwargs):
+    qs = Tweet.objects.all()
+    serializer = TweetSerializer(qs, many=True)
+    return Response(serializer.data)
 
 
 def tweet_create_view_pure_django(request, *args, **kwargs):
@@ -49,7 +57,7 @@ def tweet_create_view_pure_django(request, *args, **kwargs):
     return render(request, 'components/form.html', context={"form": form})
 
 
-def tweet_list_view(request, *args, **kwargs):
+def tweet_list_view_pure_django(request, *args, **kwargs):
     """
     REST API VIEW
     returning json data
