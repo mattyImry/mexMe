@@ -58,6 +58,26 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
                     status=200)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def tweet_action_view(request, *args, **kwargs):
+    """
+    id is required
+    action options : like , unlike, retweet
+
+    """
+    qs = Tweet.objects.filter(id=tweet_id)
+    if not qs.exists():
+        return Response({}, status=404)
+    obj = qs.first()
+    if request.user in obj.likes.all():
+        obj.likes.remove(request.user)
+    else:
+        obj.likes.add(request.user)
+    return Response({"message": "Tweet remove"},
+                    status=200)
+
+
 @api_view(['GET'])
 def tweet_list_view(request, *args, **kwargs):
     qs = Tweet.objects.all()
