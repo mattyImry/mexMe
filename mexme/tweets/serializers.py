@@ -13,7 +13,7 @@ class TweetActionSerializer(serializers.Serializer):
 
     def validate_action(self, value):
         value = value.lower().strip()
-        if not value in TWEET_ACTION_OPTION:
+        if value not in TWEET_ACTION_OPTION:
             raise serializers.ValidationError("This is not a valid action")
         return value
 
