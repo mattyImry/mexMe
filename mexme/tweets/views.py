@@ -78,12 +78,13 @@ def tweet_action_view(request, *args, **kwargs):
         obj = qs.first()
         if action == "like":
             obj.likes.add(request.user)
+            serializer = TweetSerializer(obj)
+            return Response(serializer.data, status=200)
         elif action == "unlike":
             obj.likes.remove(request.user)
         elif action == "retweet":
             pass
-    return Response({},
-                    status=200)
+    return Response({}, status=200)
 
 
 @api_view(['GET'])
