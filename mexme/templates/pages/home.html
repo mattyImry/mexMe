@@ -140,7 +140,7 @@ function getCookie(name) {
 
    
 
-    function handleDidLike(tweet_id, currentCount, action){
+    function handleTweetActionBtn(tweet_id, currentCount, action){
         console.log(tweet_id, currentCount);
         const url = "api/tweets/action"
         const method =  "POST"
@@ -163,14 +163,19 @@ function getCookie(name) {
         xhr.send(data)
         return
     }
+    
+    function RetweetBtn(tweet){
+        return "<button class='btn btn-outline-success' onclick=handleTweetActionBtn("
+         + tweet.id + "," + tweet.likes + ",'retweet')>Retweet</button>"
+    };
 
     function UnLikeBtn(tweet){
-        return "<button class='btn btn-outline-primary' onclick=handleDidLike("
+        return "<button class='btn btn-outline-primary' onclick=handleTweetActionBtn("
          + tweet.id + "," + tweet.likes + ",'unlike')>Unlike</button>"
     };
 
     function likeBtn(tweet){
-        return "<button class='btn btn-primary' onclick=handleDidLike("
+        return "<button class='btn btn-primary' onclick=handleTweetActionBtn("
          + tweet.id + "," + tweet.likes + ",'like')>" + tweet.likes + " Likes</button>"
     };
 
@@ -180,6 +185,7 @@ function getCookie(name) {
             + "</p><div class='btn-group'>" + 
                 likeBtn(tweet) + 
                 UnLikeBtn(tweet) +
+                RetweetBtn(tweet) +
             "</div></div>";
         return formattedTweet
     }
