@@ -13,11 +13,13 @@ class TweetTestCase(TestCase):
         self.user = User.objects.create_user(
             username='hyj', password='something')
         Tweet.objects.create(content="my first tweet", user=self.user)
+        Tweet.objects.create(content="my 5 tweet", user=self.user)
+        Tweet.objects.create(content="my 6 tweet", user=self.user)
 
     def test_tweet_created(self):
         tweet_obj = Tweet.objects.create(
             content="my sec tweet", user=self.user)
-        self.assertEqual(tweet_obj.id, 2)
+        self.assertEqual(tweet_obj.id, 4)
         self.assertEqual(tweet_obj.user, self.user)
 
     def get_client(self):
@@ -29,4 +31,10 @@ class TweetTestCase(TestCase):
         client = self.get_client()
         response = client.get("/api/tweets/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(len(response.json()), 3)
+
+    def test_action_like(self):
+        client = self.get_client()
+        response = client.post("/api/tweets/action/",
+                               {"id": 1, "action": "like"})
+        self.assertEqual(response.status_code, 200)
