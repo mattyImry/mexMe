@@ -15,6 +15,7 @@ class TweetTestCase(TestCase):
         Tweet.objects.create(content="my first tweet", user=self.user)
         Tweet.objects.create(content="my 5 tweet", user=self.user)
         Tweet.objects.create(content="my 6 tweet", user=self.user)
+        self.currentCount = Tweet.objects.all().count()
 
     def test_tweet_created(self):
         tweet_obj = Tweet.objects.create(
@@ -54,6 +55,11 @@ class TweetTestCase(TestCase):
 
     def test_action_retweet(self):
         client = self.get_client()
+        current_count = self.currentCount
         response = client.post("/api/tweets/action/",
                                {"id": 2, "action": "retweet"})
         self.assertEqual(response.status_code, 201)
+        data = response.json()
+        new_tweet_id = data.get("id")
+        self.assertNotEqual(2, new_tweet_id)
+        self.assertEqual(current_count + 1, new_tweet_id)
