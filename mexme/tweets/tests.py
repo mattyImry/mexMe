@@ -63,3 +63,13 @@ class TweetTestCase(TestCase):
         new_tweet_id = data.get("id")
         self.assertNotEqual(2, new_tweet_id)
         self.assertEqual(current_count + 1, new_tweet_id)
+
+    def test_tweet_create_api_view(self):
+        request_data = {'content': 'This is my test '}
+        client = self.get_client()
+        current_count = self.currentCount
+        response = client.post("/api/tweets/create/", request_data)
+        self.assertEqual(response.status_code, 201)
+        response_data = response.json()
+        new_tweet_id = response_data.get("id")
+        self.assertEqual(current_count + 1, new_tweet_id)
