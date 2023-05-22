@@ -93,12 +93,3 @@ class TweetTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
         response_incorrect_owner = client.delete('/api/tweets/3/delete/')
         self.assertEqual(response_incorrect_owner.status_code, 404)
-        
-
-    # def test_tweet_detail_api_view(self):
-    #     client = self.get_client()
-    #     response = client.get('/api/tweets/1/')
-    #     self.assertEqual(response.status_code, 200)
-    #     data = response.json()
-    #     _id = data.get('id')
-    #     self.assertEqual(_id, 1)
