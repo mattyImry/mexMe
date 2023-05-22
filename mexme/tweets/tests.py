@@ -12,9 +12,11 @@ class TweetTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='hyj', password='something')
+        self.userb = User.objects.create_user(
+            username='hyj-2', password='something2')
         Tweet.objects.create(content="my first tweet", user=self.user)
         Tweet.objects.create(content="my 5 tweet", user=self.user)
-        Tweet.objects.create(content="my 6 tweet", user=self.user)
+        Tweet.objects.create(content="my 6 tweet", user=self.userb)
         self.currentCount = Tweet.objects.all().count()
 
     def test_tweet_created(self):
@@ -81,3 +83,22 @@ class TweetTestCase(TestCase):
         data = response.json()
         _id = data.get('id')
         self.assertEqual(_id, 1)
+
+    def test_tweet_delete_api_view(self):
+        client = self.get_client()
+        response = client.delete('/api/tweets/1/delete/')
+        self.assertEqual(response.status_code, 200)
+        client = self.get_client()
+        response = client.delete('/api/tweets/1/delete/')
+        self.assertEqual(response.status_code, 404)
+        response_incorrect_owner = client.delete('/api/tweets/3/delete/')
+        self.assertEqual(response_incorrect_owner.status_code, 404)
+        
+
+    # def test_tweet_detail_api_view(self):
+    #     client = self.get_client()
+    #     response = client.get('/api/tweets/1/')
+    #     self.assertEqual(response.status_code, 200)
+    #     data = response.json()
+    #     _id = data.get('id')
+    #     self.assertEqual(_id, 1)
