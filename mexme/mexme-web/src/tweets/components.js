@@ -16,7 +16,7 @@ import { loadTweets } from "../components";
     }, [])
   
     return (tweets.map((item, index)=>{
-       <Tweet tweet={item} key={`${index}-{item.id}`} className='my-5 py-5 bg-white text-dark'/>
+       return <Tweet tweet={item} key={`${index}-{item.id}`} className='my-5 py-5 bg-white text-dark'/>
     }))
   }
 export function Tweet(props){
