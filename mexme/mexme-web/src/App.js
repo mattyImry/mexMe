@@ -17,7 +17,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <div>
-          <TweetsList/>
+          <TweetsList />
         </div>
        
         <a
