@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-import { loadTweets } from "../components";
+import { loadTweets } from "../lookup/components";
   export function TweetsList(props){
     const [tweets, setTweets] = useState([]);
   
