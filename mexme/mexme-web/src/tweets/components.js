@@ -19,24 +19,32 @@ import { loadTweets } from "../lookup/components";
        return <Tweet tweet={item} key={`${index}-{item.id}`} className='my-5 py-5 bg-white text-dark'/>
     }))
   }
+
+
+export function ActionBtn(props){
+    const {tweet, action} = props;
+    const className = props.className ? props.className : 'btn btn-primary btn-sm';
+    const display = action.type === 'like' ? `${tweet.likes} ${action.display}` : action.display;
+    return <button className={className}>{display}</button>;
+  
+  };
+
+
 export function Tweet(props){
     const {tweet} = props
     const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
     return <div className={className}>
             <p>
-              {tweet.id} - {tweet.content}
+              {tweet.id} - {tweet.content};
             </p>
   
             <div> 
-              <ActionBtn tweet={tweet} action={{type:'like'}} />
+              <ActionBtn tweet={tweet} action={{type:'like', display:'Likes'}} />
+              <ActionBtn tweet={tweet} action={{type:'unlike', display:'Likes' }} />
+              <ActionBtn tweet={tweet} action={{type:'retweet', display:'Retweet' }} />
+
             </div>
     </div>
   }
   
-export function ActionBtn(props){
-    const {tweet, action} = props
-    const className = props.className ? props.className : 'btn btn-primary btn-sm'
-    return action.type === 'like' ? <button className={className}>{tweet.likes} Likes </button> : null
-  
-  };
   
