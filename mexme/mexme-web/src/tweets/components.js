@@ -1,31 +1,42 @@
 import React, {useEffect, useState} from "react";
 
 import { loadTweets } from "../lookup/components";
-  export function TweetsList(props){
-    const [tweets, setTweets] = useState([]);
-  
-    useEffect(() => {
-      const myCallback = (response, status) =>{
-        if(status === 200){
-          setTweets(response)  
-        }else{
-          alert('there was en error');
-        }
+
+
+export function TweetsList(props){
+  const [tweets, setTweets] = useState([]);
+
+  useEffect(() => {
+    const myCallback = (response, status) =>{
+      if(status === 200){
+        setTweets(response)  
+      }else{
+        alert('there was en error');
       }
-      loadTweets(myCallback)
-    }, [])
-  
-    return (tweets.map((item, index)=>{
-       return <Tweet tweet={item} key={`${index}-{item.id}`} className='my-5 py-5 bg-white text-dark'/>
-    }))
-  }
+    }
+    loadTweets(myCallback)
+  }, [])
+
+  return (tweets.map((item, index)=>{
+      return <Tweet tweet={item} key={`${index}-{item.id}`} className='my-5 py-5 bg-white text-dark'/>
+  }))
+}
 
 
 export function ActionBtn(props){
     const {tweet, action} = props;
+    const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0);
+
     const className = props.className ? props.className : 'btn btn-primary btn-sm';
-    const display = action.type === 'like' ? `${tweet.likes} ${action.display}` : action.display;
-    return <button className={className}>{display}</button>;
+    const actionDisplay = action.display ? action.display : 'Action';
+    const display = action.type === 'like' ? `${likes} ${actionDisplay}` : actionDisplay;
+    const handleClick = (event) => {
+      event.preventDefault();
+      if (action.type === 'like') {
+        setLikes(tweet.likes+1);
+      }
+    }
+    return <button className={className} onClick={handleClick}>{display}</button>;
   
   };
 
@@ -40,7 +51,7 @@ export function Tweet(props){
   
             <div> 
               <ActionBtn tweet={tweet} action={{type:'like', display:'Likes'}} />
-              <ActionBtn tweet={tweet} action={{type:'unlike', display:'Likes' }} />
+              <ActionBtn tweet={tweet} action={{type:'unlike', display:'Unlikes' }} />
               <ActionBtn tweet={tweet} action={{type:'retweet', display:'Retweet' }} />
 
             </div>
