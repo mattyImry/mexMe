@@ -26,14 +26,20 @@ export function TweetsList(props){
 export function ActionBtn(props){
     const {tweet, action} = props;
     const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0);
-
+    const[justClicked, setJustclicked] = useState(false);
     const className = props.className ? props.className : 'btn btn-primary btn-sm';
     const actionDisplay = action.display ? action.display : 'Action';
     const display = action.type === 'like' ? `${likes} ${actionDisplay}` : actionDisplay;
     const handleClick = (event) => {
       event.preventDefault();
       if (action.type === 'like') {
-        setLikes(tweet.likes+1);
+        if(justClicked === true){
+          setLikes(likes - 1);
+          setJustclicked(false);
+        }else {
+          setLikes(tweet.likes+1);
+          setJustclicked(true);
+        }
       }
     }
     return <button className={className} onClick={handleClick}>{display}</button>;
