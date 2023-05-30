@@ -4,10 +4,18 @@ import { loadTweets } from "../lookup/components";
 
 export function TweetComponent(props) {
     const textAreaRef = React.createRef();
+    const [newTweets, setNewTweets] = useState([]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const newValue = textAreaRef.current.value;
+        let tempNewTweets = [...newTweets];
+        tempNewTweets.unshift({
+            content: newValue,
+            likes: 0,
+            id: 12313,
+        });
+        setNewTweets(tempNewTweets);
         textAreaRef.current.value = "";
     };
 
@@ -26,18 +34,18 @@ export function TweetComponent(props) {
                     </button>
                 </form>
             </div>
-            <TweetsList />
+            <TweetsList newTweets={newTweets} />
         </div>
     );
 }
 
 export function TweetsList(props) {
-    const [tweets, setTweets] = useState([]);
-
+    const [tweetsInit, setTweetsInit] = useState([]);
+    //setTweetsInit([...props.newTweets].concat(tweetsInit));
     useEffect(() => {
         const myCallback = (response, status) => {
             if (status === 200) {
-                setTweets(response);
+                setTweetsInit(response);
             } else {
                 alert("there was en error");
             }
@@ -45,7 +53,7 @@ export function TweetsList(props) {
         loadTweets(myCallback);
     }, []);
 
-    return tweets.map((item, index) => {
+    return tweetsInit.map((item, index) => {
         return (
             <Tweet
                 tweet={item}
