@@ -59,7 +59,7 @@ export function TweetsList(props) {
             }
         };
         loadTweets(myCallback);
-    }, []);
+    }, [tweetsInit]);
 
     return tweets.map((item, index) => {
         return (
