@@ -41,7 +41,15 @@ export function TweetComponent(props) {
 
 export function TweetsList(props) {
     const [tweetsInit, setTweetsInit] = useState([]);
-    //setTweetsInit([...props.newTweets].concat(tweetsInit));
+    const [tweets, setTweets] = useState([]);
+
+    useEffect(() => {
+        let final = [...props.newTweets].concat(tweetsInit);
+        if (final.length !== tweets.length) {
+            setTweets(final);
+        }
+    }, [props.newTweets, tweetsInit, tweets]);
+
     useEffect(() => {
         const myCallback = (response, status) => {
             if (status === 200) {
@@ -53,7 +61,7 @@ export function TweetsList(props) {
         loadTweets(myCallback);
     }, []);
 
-    return tweetsInit.map((item, index) => {
+    return tweets.map((item, index) => {
         return (
             <Tweet
                 tweet={item}
